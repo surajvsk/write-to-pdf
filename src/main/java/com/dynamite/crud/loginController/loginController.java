@@ -63,47 +63,47 @@ public class loginController {
             ));
 
             fieldsToUpdate.put("SCSB BRANCH", Arrays.asList(
-                    Map.of("id", 1, "value", "12345", "x", 10, "y", 20, "font_size", 18)
+                    Map.of("id", 1, "value", "12345", "x", 10, "y", 20, "font_size", 8)
             ));
 
             fieldsToUpdate.put("Bank Name", Arrays.asList(
-                    Map.of("id", 1, "value", "XYZ Bank Ltd.", "x", 10, "y", 20, "font_size", 18)
+                    Map.of("id", 1, "value", "XYZ Bank Ltd.", "x", 10, "y", 20, "font_size", 8)
             ));
 
             fieldsToUpdate.put("Mr", Arrays.asList(
-                    Map.of("id", 1, "value", "ANSH JAIN", "x", 10, "y", 20, "font_size", 18)
+                    Map.of("id", 1, "value", "ANSH JAIN", "x", 43, "y", -10, "font_size", 8)
             ));
 
             fieldsToUpdate.put("Address", Arrays.asList(
-                    Map.of("id", 1, "value", "MADHYA PRADESH RAT L AM 4 5 7 0 0 1", "x", 10, "y", 20, "font_size", 18)
+                    Map.of("id", 1, "value", "MADHYA PRADESH RAT L AM 4 5 7 0 0 1", "x", 40, "y", -12, "font_size", 8)
             ));
 
             fieldsToUpdate.put("Mobile", Arrays.asList(
-                    Map.of("id", 1, "value", "7666321805", "x", 10, "y", 20, "font_size", 18)
+                    Map.of("id", 1, "value", "7666321805", "x", 40, "y", -12, "font_size", 8)
             ));
 
             fieldsToUpdate.put("STD", Arrays.asList(
-                    Map.of("id", 1, "value", "7666321805", "x", 10, "y", 20, "font_size", 18)
+                    Map.of("id", 1, "value", "7666321805", "x", 60, "y", -12, "font_size", 8)
             ));
 
             fieldsToUpdate.put("Amount blocked", Arrays.asList(
-                    Map.of("id", 1, "value", "14124", "x", 10, "y", 20, "font_size", 18)
+                    Map.of("id", 1, "value", "14124", "x", 10, "y", 20, "font_size", 8)
             ));
 
             fieldsToUpdate.put("No. of Equity Shares", Arrays.asList(
-                    Map.of("id", 1, "value", "33", "x", 10, "y", 20, "font_size", 18)
+                    Map.of("id", 1, "value", "33", "x", 10, "y", 20, "font_size", 8)
             ));
 
             fieldsToUpdate.put("Bid Price", Arrays.asList(
-                    Map.of("id", 1, "value", "428", "x", 10, "y", 20, "font_size", 18)
+                    Map.of("id", 1, "value", "428", "x", 10, "y", 20, "font_size", 8)
             ));
 
             fieldsToUpdate.put("Blocked", Arrays.asList(
-                    Map.of("id", 1, "value", "14124", "x", 10, "y", 20, "font_size", 18)
+                    Map.of("id", 1, "value", "14124", "x", 10, "y", 20, "font_size", 8)
             ));
 
             fieldsToUpdate.put("in words", Arrays.asList(
-                    Map.of("id", 1, "value", "Fourteen Thousand One Hundred Twenty Four", "x", 10, "y", 20, "font_size", 18)
+                    Map.of("id", 1, "value", "Fourteen Thousand One Hundred Twenty Four", "x", 35, "y", -9, "font_size", 8)
             ));
 
             Map<String, float[]> fieldCoordinates = new HashMap<>(); // Store positions dynamically
