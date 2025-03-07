@@ -47,8 +47,8 @@ public class loginController {
 	@RequestMapping(value = "/pageone", method = RequestMethod.POST)
     public String pageOne() throws DocumentException, IOException {
         try {
-            String src = "D:/Pdf/HEXAWARE_TECHNOLOGIES_LIMITED_SyndicateASBA Form_R_FullForm_JM.pdf";  // Input PDF
-            String dest = "D:/Pdf/HEXAWARE_TECHNOLOGIES_LIMITED_SyndicateASBA Form_R_FullForm_JM1.pdf"; // Output PDF
+            String src = "D:/ArihantCapital/write-to-pdf/Pdf/HEXAWARE_TECHNOLOGIES_LIMITED_SyndicateASBA Form_R_FullForm_JM.pdf";  // Input PDF
+            String dest = "D:/ArihantCapital/write-to-pdf/Pdf/HEXAWARE_TECHNOLOGIES_LIMITED_SyndicateASBA Form_R_FullForm_JM1.pdf"; // Output PDF
 
             PdfReader reader = new PdfReader(src);
             PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
@@ -59,7 +59,7 @@ public class loginController {
 
             // Storing values as list of maps
             fieldsToUpdate.put("Bid cum", Arrays.asList(
-                    Map.of("id", 1, "value", "30833057", "x", 55, "y", 0, "font_size", 18)
+                    Map.of("id", 1, "value", "30833057", "x", 55, "y", 2, "font_size", 18)
             ));
 
             fieldsToUpdate.put("SCSB BRANCH", Arrays.asList(
@@ -71,7 +71,7 @@ public class loginController {
             ));
 
             fieldsToUpdate.put("Mr", Arrays.asList(
-                    Map.of("id", 1, "value", "ANSH JAIN", "x", 43, "y", -10, "font_size", 8)
+                    Map.of("id", 1, "value", addSpaces("ANSH JAIN"), "x", 45, "y", -10, "font_size", 8)
             ));
 
             fieldsToUpdate.put("Address", Arrays.asList(
@@ -83,11 +83,11 @@ public class loginController {
             ));
 
             fieldsToUpdate.put("STD", Arrays.asList(
-                    Map.of("id", 1, "value", "7666321805", "x", 60, "y", -12, "font_size", 8)
+                    Map.of("id", 1, "value", addSpaces("7666321805"), "x", 62, "y", -11, "font_size", 12)
             ));
 
             fieldsToUpdate.put("Amount blocked", Arrays.asList(
-                    Map.of("id", 1, "value", "14124", "x", 10, "y", 20, "font_size", 8)
+                    Map.of("id", 1, "value", "14124", "x", 95, "y", -8, "font_size", 8)
             ));
 
             fieldsToUpdate.put("No. of Equity Shares", Arrays.asList(
@@ -182,6 +182,10 @@ public class loginController {
         }
         return "Hello";
     }
+	
+	  public static String addSpaces(String input) {
+	        return String.join(" ", input.split(""));
+	    }
 
 	
 	@RequestMapping(value = "/pageoneWorking", method = RequestMethod.POST)
