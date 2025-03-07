@@ -4,7 +4,9 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.MediaType;
@@ -41,10 +43,149 @@ public class loginController {
 //  String src = "D:/Pdf/HEXAWARE_TECHNOLOGIES_LIMITED_SyndicateASBA Form_R_FullForm_JM.pdf";   // Path to the PDF form
 //  String dest = "D:/Pdf/HEXAWARE_TECHNOLOGIES_LIMITED_SyndicateASBA Form_R_FullForm_JM1.pdf"; // Output file with filled data
  
-
 	
 	@RequestMapping(value = "/pageone", method = RequestMethod.POST)
-	public String pageOne() throws DocumentException, IOException {
+    public String pageOne() throws DocumentException, IOException {
+        try {
+            String src = "D:/Pdf/HEXAWARE_TECHNOLOGIES_LIMITED_SyndicateASBA Form_R_FullForm_JM.pdf";  // Input PDF
+            String dest = "D:/Pdf/HEXAWARE_TECHNOLOGIES_LIMITED_SyndicateASBA Form_R_FullForm_JM1.pdf"; // Output PDF
+
+            PdfReader reader = new PdfReader(src);
+            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
+            PdfReaderContentParser parser = new PdfReaderContentParser(reader);
+
+            int page = 1; // Process only page 1
+            Map<String, Object> fieldsToUpdate = new HashMap<>(); // Store multiple fields
+
+            // Storing values as list of maps
+            fieldsToUpdate.put("Bid cum", Arrays.asList(
+                    Map.of("id", 1, "value", "30833057", "x", 55, "y", 0, "font_size", 18)
+            ));
+
+            fieldsToUpdate.put("SCSB BRANCH", Arrays.asList(
+                    Map.of("id", 1, "value", "12345", "x", 10, "y", 20, "font_size", 18)
+            ));
+
+            fieldsToUpdate.put("Bank Name", Arrays.asList(
+                    Map.of("id", 1, "value", "XYZ Bank Ltd.", "x", 10, "y", 20, "font_size", 18)
+            ));
+
+            fieldsToUpdate.put("Mr", Arrays.asList(
+                    Map.of("id", 1, "value", "ANSH JAIN", "x", 10, "y", 20, "font_size", 18)
+            ));
+
+            fieldsToUpdate.put("Address", Arrays.asList(
+                    Map.of("id", 1, "value", "MADHYA PRADESH RAT L AM 4 5 7 0 0 1", "x", 10, "y", 20, "font_size", 18)
+            ));
+
+            fieldsToUpdate.put("Mobile", Arrays.asList(
+                    Map.of("id", 1, "value", "7666321805", "x", 10, "y", 20, "font_size", 18)
+            ));
+
+            fieldsToUpdate.put("STD", Arrays.asList(
+                    Map.of("id", 1, "value", "7666321805", "x", 10, "y", 20, "font_size", 18)
+            ));
+
+            fieldsToUpdate.put("Amount blocked", Arrays.asList(
+                    Map.of("id", 1, "value", "14124", "x", 10, "y", 20, "font_size", 18)
+            ));
+
+            fieldsToUpdate.put("No. of Equity Shares", Arrays.asList(
+                    Map.of("id", 1, "value", "33", "x", 10, "y", 20, "font_size", 18)
+            ));
+
+            fieldsToUpdate.put("Bid Price", Arrays.asList(
+                    Map.of("id", 1, "value", "428", "x", 10, "y", 20, "font_size", 18)
+            ));
+
+            fieldsToUpdate.put("Blocked", Arrays.asList(
+                    Map.of("id", 1, "value", "14124", "x", 10, "y", 20, "font_size", 18)
+            ));
+
+            fieldsToUpdate.put("in words", Arrays.asList(
+                    Map.of("id", 1, "value", "Fourteen Thousand One Hundred Twenty Four", "x", 10, "y", 20, "font_size", 18)
+            ));
+
+            Map<String, float[]> fieldCoordinates = new HashMap<>(); // Store positions dynamically
+
+            parser.processContent(page, new RenderListener() {
+                StringBuilder fullText = new StringBuilder();
+
+                @Override
+                public void beginTextBlock() {
+                    fullText.setLength(0); // Clear text buffer for new blocks
+                }
+
+                @Override
+                public void renderText(TextRenderInfo renderInfo) {
+                    String text = renderInfo.getText();
+                    if (text != null) {
+                        fullText.append(text).append(" "); // Append text with space
+                    }
+
+                    // Check for all fields in the PDF
+                    for (String field : fieldsToUpdate.keySet()) {
+                        if (text != null && text.contains(field)) {
+                            float x = renderInfo.getBaseline().getStartPoint().get(0); // X-Coordinate
+                            float y = renderInfo.getBaseline().getStartPoint().get(1); // Y-Coordinate
+                            fieldCoordinates.put(field, new float[]{x, y});
+                            System.out.println("Found '" + field + "' at (X: " + x + ", Y: " + y + ")");
+                        }
+                    }
+                }
+
+                @Override
+                public void endTextBlock() {
+                    String extractedText = fullText.toString().trim().replaceAll("\\s+", " ");
+                    // Add text for all detected fields
+                    for (String field : fieldsToUpdate.keySet()) {
+                        if (extractedText.contains(field) && fieldCoordinates.containsKey(field)) {
+                            try {
+                                float[] coords = fieldCoordinates.get(field);
+                                float x = coords[0];
+                                float y = coords[1] - 10; // Adjust position
+                                PdfContentByte over = stamper.getOverContent(page);
+                                BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+
+                                over.beginText();
+                                
+                                 // Offset for better alignment
+//                                over.setTextMatrix(x + 50, y);
+                                // Extract and print the correct value
+                                List<Map<String, Object>> fieldValues = (List<Map<String, Object>>) fieldsToUpdate.get(field);
+                                if (fieldValues != null && !fieldValues.isEmpty()) {
+                                	over.setFontAndSize(bf, Integer.parseInt(fieldValues.get(0).get("font_size").toString()));
+                                	over.setTextMatrix(x + Integer.parseInt(fieldValues.get(0).get("x").toString()), y - Integer.parseInt(fieldValues.get(0).get("y").toString()));
+                                    String valueToPrint = fieldValues.get(0).get("value").toString();
+                                    over.showText(valueToPrint);
+                                    System.out.println("Updated '" + field + "' with '" + valueToPrint + "' at (X: " + x + ", Y: " + y + ")");
+                                }
+
+                                over.endText();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void renderImage(ImageRenderInfo renderInfo) {
+                }
+            });
+
+            stamper.close();
+            reader.close();
+            System.out.println("✅ PDF updated successfully: " + dest);
+        } catch (IOException | DocumentException e) {
+            e.printStackTrace();
+        }
+        return "Hello";
+    }
+
+	
+	@RequestMapping(value = "/pageoneWorking", method = RequestMethod.POST)
+	public String pageOneWorking() throws DocumentException, IOException {
 	    try {
 	        String src = "D:/Pdf/HEXAWARE_TECHNOLOGIES_LIMITED_SyndicateASBA Form_R_FullForm_JM.pdf";  // Input PDF
 	        String dest = "D:/Pdf/HEXAWARE_TECHNOLOGIES_LIMITED_SyndicateASBA Form_R_FullForm_JM1.pdf"; // Output PDF
@@ -56,20 +197,55 @@ public class loginController {
 	        int page = 1; // Process only page 1
 	        Map<String, Object> fieldsToUpdate = new HashMap<>(); // Store multiple fields
 
-	        // 🎯 Define fields to search and their new values
-	        fieldsToUpdate.put("Bid cum", "30833057");
-	        fieldsToUpdate.put("SCSB BRANCH", "12334");
-	        fieldsToUpdate.put("Applicant Name", "John Doe");
-	        fieldsToUpdate.put("PAN", "ABCDE1234F");
-	        fieldsToUpdate.put("Bank Name", "XYZ Bank Ltd.");
-	        fieldsToUpdate.put("Mr", "ANSH JAIN");
-	        fieldsToUpdate.put("Address", "MADHYA PRADESH RAT L AM 4 5 7 0 0 1");
-	        fieldsToUpdate.put("Mobile", "7666321805");
-	        fieldsToUpdate.put("STD", "7666321805");
-	        fieldsToUpdate.put("Amount blocked", "14124");
-	        fieldsToUpdate.put("No. of Equity Shares", "33");
-	        fieldsToUpdate.put("Bid Price", "428");
-	        fieldsToUpdate.put("Blocked", "14124");
+	        fieldsToUpdate.put("Bid cum", Arrays.asList(
+	        	    Map.of("id", 1, "value", "30833057", "x", 10, "y", 20)
+	        	));
+	        
+	        fieldsToUpdate.put("SCSB BRANCH", Arrays.asList(
+	        	    Map.of("id", 1, "value", "12345", "x", 10, "y", 20)
+	        	));
+	        fieldsToUpdate.put("Bank Name", Arrays.asList(
+	        	    Map.of("id", 1, "value", "XYZ Bank Ltd.", "x", 10, "y", 20)
+	        	));
+	        
+	        fieldsToUpdate.put("Mr", Arrays.asList(
+	        	    Map.of("id", 1, "value", "ANSH JAIN", "x", 10, "y", 20)
+	        	));
+	        
+	        fieldsToUpdate.put("Address", Arrays.asList(
+	        	    Map.of("id", 1, "value",  "MADHYA PRADESH RAT L AM 4 5 7 0 0 1", "x", 10, "y", 20)
+	        	));
+	        
+	        fieldsToUpdate.put("Mobile", Arrays.asList(
+	        	    Map.of("id", 1, "value",  "7666321805", "x", 10, "y", 20)
+	        	));
+	        
+	        fieldsToUpdate.put("STD", Arrays.asList(
+	        	    Map.of("id", 1, "value",  "7666321805", "x", 10, "y", 20)
+	        	));
+	        
+	        fieldsToUpdate.put("Amount blocked", Arrays.asList(
+	        	    Map.of("id", 1, "value",  "14124", "x", 10, "y", 20)
+	        	));
+	        
+	        fieldsToUpdate.put("No. of Equity Shares", Arrays.asList(
+	        	    Map.of("id", 1, "value",  "33", "x", 10, "y", 20)
+	        	));
+	        
+	        fieldsToUpdate.put("Bid Price", Arrays.asList(
+	        	    Map.of("id", 1, "value",  "428", "x", 10, "y", 20)
+	        	));
+	        
+	        fieldsToUpdate.put("Blocked", Arrays.asList(
+	        	    Map.of("id", 1, "value",  "14124", "x", 10, "y", 20)
+	        	));
+	        
+	        fieldsToUpdate.put("in words", Arrays.asList(
+	        	    Map.of("id", 1, "value",  "Fourteen Thousand One Hundred Twenty Four", "x", 10, "y", 20)
+	        	));
+	        
+//	        fieldsToUpdate.put("DEPOSITORY ACCOUNT", "I N 3 0 1 9 8 3 1 1 3 1 5 4 3 4");
+	         
 	        
 	        
 	        Map<String, float[]> fieldCoordinates = new HashMap<>(); // Store positions dynamically
@@ -105,8 +281,6 @@ public class loginController {
 	            @Override
 	            public void endTextBlock() {
 	                String extractedText = fullText.toString().trim().replaceAll("\\s+", " ");
-//	                System.out.println("Extracted Text: " + extractedText);
-
 	                // Add text for all detected fields
 	                for (String field : fieldsToUpdate.keySet()) {
 	                    if (extractedText.contains(field) && fieldCoordinates.containsKey(field)) {
@@ -117,7 +291,7 @@ public class loginController {
 	                            PdfContentByte over = stamper.getOverContent(page);
 	                            BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 	                            over.beginText();
-	                            over.setFontAndSize(bf, 12);
+	                            over.setFontAndSize(bf, 8);
 	                            over.setTextMatrix(x + 50, y); // Offset for better alignment
 	                            over.showText(fieldsToUpdate.get(field).toString()); // Insert new value
 	                            over.endText();
