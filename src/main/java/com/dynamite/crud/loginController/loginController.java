@@ -59,9 +59,7 @@ public class loginController {
             
             addField(fieldsToUpdate, "Bid cum", Map.of("id", 1, "value", "30833057", "x", 55, "y", 10, "font_size", 12));
             addField(fieldsToUpdate, "Mr", Map.of("id", 1, "value", addSpaces("ANKIT JAIN"), "x", 80, "y", -2, "font_size", 8));
-            
-           
-
+     
             // Function to add multiple values to the same key
             addField(fieldsToUpdate, "Bid Lot as advertised", Map.of("id", 1, "value", addSpaces("33"), "x", 55, "y", 30, "font_size", 8));
             addField(fieldsToUpdate, "Bid Lot as advertised", Map.of("id", 2, "value", "428", "x", 120, "y", 30, "font_size", 8));
@@ -150,6 +148,7 @@ public class loginController {
         return "Hello";
     }
 	
+		
 	
 	public static List<String> splitTextIntoLines(String text, int maxCharsPerLine) {
         List<String> lines = new ArrayList<>();
