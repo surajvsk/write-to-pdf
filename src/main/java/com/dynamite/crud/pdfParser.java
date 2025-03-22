@@ -32,7 +32,7 @@ import com.itextpdf.text.pdf.parser.*;
 @RestController
 public class pdfParser {
 
-	@RequestMapping(value = "/pdfParser", method = RequestMethod.POST)
+	@RequestMapping(value = "/pdfParser", method = RequestMethod.GET)
 	public ResponseEntity<?> pdfParser() throws DocumentException, IOException {
 	    try {
 	        UUID uuid = UUID.randomUUID();
@@ -106,7 +106,6 @@ public class pdfParser {
             addField(fieldsToUpdate, "Amount blocked (in figures)", Map.of("id", 1, "value", "14124", "position", "left-center", "offsetX", 140, "offsetY", -35, "font_size", 15));
             //Bottom left
             addField(fieldsToUpdate, "Amount blocked (in figures)", Map.of("id", 1, "value", "14124", "position", "bottom-left", "offsetX", 140, "offsetY", 170, "font_size", 15));
-            
             
             
             //SET CENTER BID PRICE . BID OPTIONS
